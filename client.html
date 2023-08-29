@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang = "en">
+   <head>
+      <!-- add style tag for css -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link href='chat.css' rel="stylesheet" type='text/css'> -->
+    <title>Module 6 Chat Room</title>
+    <style>
+      
+      div#header{
+         font-family: "Open Sans", sans-serif;
+         font-size: 20px;
+         letter-spacing: 2px;
+         text-decoration: none;
+         text-transform: uppercase;
+         text-align:center;
+         padding:10px;
+         background: #fff;
+         height: 50px;
+         box-sizing: border-box;
+         font-family: 'Trocchi', serif;
+      }
+      .centerLabels{
+         font-family: "Open Sans", sans-serif;
+         font-size: 12px;
+         letter-spacing: 2px;
+         text-decoration: none;
+         
+         padding:10px;
+         background: #fff;
+         height: 50px;
+         box-sizing: border-box;
+         font-family: 'Trocchi', serif;
+      }
+      .headLabels{
+         font-family: "Open Sans", sans-serif;
+         font-size: 17px;
+         letter-spacing: 2px;
+         padding:10px;
+         background: #fff;
+         height: 50px;
+         box-sizing: border-box;
+         font-family: 'Trocchi', serif;
+       
+      }
+      body {background-color: #92a8d16e;}
+      
+         
+      
+/* button css taken from https://getcssscan.com/css-buttons-examples*/
+.button-17 {
+  align-items: center;
+  appearance: none;
+  background-color: #fff;
+  border-radius: 24px;
+  border-style: none;
+  box-shadow: rgba(0, 0, 0, .2) 0 3px 5px -1px,rgba(0, 0, 0, .14) 0 6px 10px 0,rgba(0, 0, 0, .12) 0 1px 18px 0;
+  box-sizing: border-box;
+  color: #3c4043;
+  cursor: pointer;
+  display: inline-flex;
+  fill: currentcolor;
+  font-family: "Google Sans",Roboto,Arial,sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  height: 48px;
+  justify-content: center;
+  letter-spacing: .25px;
+  line-height: normal;
+  max-width: 100%;
+  overflow: visible;
+  padding: 2px 24px;
+  position: relative;
+  text-align: center;
+  text-transform: none;
+  transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1),opacity 15ms linear 30ms,transform 270ms cubic-bezier(0, 0, .2, 1) 0ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: auto;
+  will-change: transform,opacity;
+  z-index: 0;
+}
+
+.button-17 {
+  appearance: none;
+  background-color: #FAFBFC;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  box-sizing: border-box;
+  color: #24292E;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  list-style: none;
+  padding: 6px 16px;
+  position: relative;
+  transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  white-space: nowrap;
+  word-wrap: break-word;
+}
+
+.button-17:hover {
+  background-color: #F3F4F6;
+  text-decoration: none;
+  transition-duration: 0.1s;
+}
+
+.button-17:disabled {
+  background-color: #FAFBFC;
+  border-color: rgba(27, 31, 35, 0.15);
+  color: #959DA5;
+  cursor: default;
+}
+
+.button-17:active {
+  background-color: #EDEFF2;
+  box-shadow: rgba(225, 228, 232, 0.2) 0 1px 0 inset;
+  transition: none 0s;
+}
+
+.button-17:focus {
+  outline: 1px transparent;
+}
+
+.button-17:before {
+  display: none;
+}
+
+.button-17:-webkit-details-marker {
+  display: none;
+}
+    </style>
+    </head>
+    <body>
+      <div id = "header">Welcome to the Chatroom</div>
+    
+     <div class = "headLabels" id="register">
+         <label for="username">Please enter a nickname to chat </label>
+         <input type="text" id="username" required>
+               <!-- HTML !-->
+         <button class = "button-17" onclick="register()">Register</button>
+     </div>
+    
+     <div class = "headLabels" id = "currentRoom"></div>
+     <div class = "centerLabels" id = "message">
+       <label>Message</label><input type="text" id="message_input">
+       <button class = "button-17" onclick="sendMessage()">send</button>
+    </div>
+    <div class = "centerLabels" id = "privateMessage">
+      <label>Private Message</label><input type="text" id="private_message_input" >
+      <label>Recipient</label><input type="text" id="receiver">
+      <button class = "button-17" onclick= "sendPrivateMessage()" >send</button>
+   </div>
+    
+    <div class = "headLabels" id="lobby">
+       <p> Join a chatroom from the list below or create your own chatroom. </p>
+    </div>
+    <div class = "headLabels" id="chatroomList"></div>
+    <div class = "centerLabels" id="addRoom">
+       <label for="newRoomName">Please enter a name for the room</label>
+       <input type="text" id="newRoomName" required> 
+       <label for="password">Optional Password</label>
+       <input type="text" id="password">
+       <button class = "button-17" onclick="createRoom()">Create Room</button>
+   </div>
+   <div class = "centerLabels" id="joinRoom">
+       <label for="joinedRoomName">Please enter which room to join</label>
+       <input type="text" id="joinedRoomName" required>
+       <label for="passwordRoom">Enter the password for this room</label>
+       <input type="text" id="passwordRoom" >
+       <button class = "button-17" onclick="joinRoom()">Join Room</button>
+   </div>
+   
+ <div class = "centerLabels" id="kickUser">
+    <label for="userKicked">Username of kicked user: </label>
+    <input type="text" id="userKicked" required>
+    <button class = "button-17" onclick="kickUser()">Kick</button>
+ </div>
+ <div class = "centerLabels" id="banUser">
+   <label for="userBanned">Username of banned user: </label>
+   <input type="text" id="userBanned" required>
+   <button class = "button-17" onclick="banUser()">Ban</button>
+</div>
+<div class = "centerLabels" id="changeMod">
+   <label for="newMod">New Mod: </label>
+   <input type="text" id="newMod" required>
+   <button class = "button-17" onclick="newMod()">New Mod</button>
+</div>
+<div class = "centerLabels" id="deleteRoom">
+   <label for="deletedRoom">Room to Delete: </label>
+   <input type="text" id="deletedRoom" required>
+   <button class = "button-17" onclick="deleteRoom()">Delete</button>
+</div>
+<div class = "centerLabels" id = "joinedUsers"></div>
+ <div class = "centerLabels" id="chatroomInterior"></div>
+ <div class = "centerLabels" id="chatlog"></div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+         document.getElementById("header").style.display = "block";
+         document.getElementById("message").style.display = "none";
+         document.getElementById("register").style.display = "block";
+         document.getElementById("chatlog").style.display = "none";
+         document.getElementById("lobby").style.display = "none";
+         document.getElementById("currentRoom").style.display = "none";
+         document.getElementById("currentRoom").innerHTML = "You are in the " + currentRoom;
+         document.getElementById("joinRoom").style.display = "none";
+         document.getElementById("chatroomList").style.display = "none";
+         document.getElementById("kickUser").style.display = "none";
+         document.getElementById("banUser").style.display = "none";
+         document.getElementById("privateMessage").style.display = "none";
+         document.getElementById("addRoom").style.display = "none";
+         document.getElementById("changeMod").style.display = "none";
+         document.getElementById("deleteRoom").style.display = "none";
+      var socketio = io.connect();
+      var currentRoom;
+     //css hidden classes
+      socketio.on("message_to_client",function(data) {
+         //Append an HR thematic break and the escaped HTML of the new message
+         document.getElementById("chatlog").appendChild(document.createElement("hr"));
+         document.getElementById("chatlog").appendChild(document.createTextNode(data['message']));
+      });
+      socketio.on("newUser", function(data){
+         //appending the user entering to the div
+         document.getElementById("chatlog").appendChild(document.createElement("hr"));
+         currentRoom = "lobby";
+         document.getElementById("chatlog").appendChild(document.createTextNode(data['message'] + " has joined the lobby"));
+         document.getElementById("chatlog").appendChild(document.createTextNode('\n'));
+         document.getElementById("message").style.display = "block";
+         document.getElementById("register").style.display = "none";
+         document.getElementById("chatlog").style.display = "block";
+         document.getElementById("lobby").style.display = "block";
+         document.getElementById("currentRoom").style.display = "block";
+         document.getElementById("currentRoom").innerHTML = "You are in the " + currentRoom;
+         document.getElementById("joinRoom").style.display = "block";
+         document.getElementById("addRoom").style.display = "block";
+         document.getElementById("chatroomList").style.display = "block";
+         document.getElementById("privateMessage").style.display = "block";
+         document.getElementById("changeMod").style.display = "block";
+         document.getElementById("deleteRoom").style.display = "block";
+         
+         socketio.emit("listRooms", {message:"hi"});
+         
+      });
+      socketio.on("roomListRenew", function(data){
+         document.getElementById("chatroomList").innerHTML = data['message'];
+      });
+      socketio.on("roomList", function(data){
+         //document.getElementById("chatroomList").appendChild(document.createElement("hr"));
+         document.getElementById("chatroomList").innerHTML = data['message'];
+         document.getElementById("joinRoom").style.display = "block";
+      });
+      socketio.on("passwordIncorrect", function(data){
+         alert("password incorrect - please try again");
+      });
+      socketio.on("existingUser", function(data){
+         alert(data['message']);
+      });
+      //if the user cannot join
+      socketio.on("could_join", function(data){
+         if (data["message"]==false){
+            console.log("could not join");
+            alert("could not join room : chatroom does not exist");
+         }
+         else{
+            alert("chatroom joined successfully");
+            document.getElementById("chatlog").style.display = "block";
+            document.getElementById("chatlog").appendChild(document.createElement("hr"));
+            document.getElementById("chatlog").appendChild(document.createTextNode(data.enter + " has just joined the room"));
+           
+         document.getElementById("deleteRoom").style.display = "block";
+         }
+      });
+      socketio.on("showUsers", function(data){
+         //setting our current room equal to the one just joined
+         document.getElementById("chatroomInterior").style.display = "block";
+         currentRoom = data['room_now'];
+         document.getElementById("currentRoom").innerHTML = "You are in the " + currentRoom;
+         let roomMap = data['allusers'];
+         document.getElementById("chatroomInterior").innerHTML = roomMap;
+         document.getElementById("kickUser").style.display = "block";
+         document.getElementById("changeMod").style.display = "block";
+         document.getElementById("banUser").style.display = "block";
+      });
+      socketio.on("successKick", function(data){
+         alert("You were kicked from the room");
+         socketio.emit("joined_room", {joined_room: "lobby", password: "no password"});
+      });
+      socketio.on("kickingError", function(data){
+         alert(data["message"]);
+      });
+      socketio.on("user_not_found", function(data){
+         alert(data["message"]);
+      });
+      socketio.on("banner_success", function(data){
+         alert(data["message"]);
+         
+      });
+      socketio.on("banned_receiver", function(data){
+         alert(data["message"]);
+         socketio.emit("joined_room", {joined_room: "lobby", password: "no password"});
+      });
+      socketio.on("bannedEntering", function(data){
+         alert(data["message"]);
+         
+      });
+      socketio.on("new_mod_info", function(data){
+         alert(data["message"]);
+      });
+      socketio.on("roomDeleted", function(data){
+         alert(data["roomName"]+ " has been deleted");
+         socketio.emit("listRooms", {message:"hi"});
+      });
+      function sendMessage(){
+         let msg = document.getElementById("message_input").value;
+
+         socketio.emit("message_to_server", {message:msg});
+      }
+      function sendPrivateMessage(){
+         let msg = document.getElementById("private_message_input").value;
+         let receiver=  document.getElementById("receiver").value;
+         socketio.emit("private_message_to_server", {message:msg, person:receiver});
+      }
+      function register() {
+        //getting our username from the doc
+        const username = document.getElementById("username").value;
+        //making sure they did not try to enter an empty username
+        if (document.getElementById("username").value.length == 0) {
+            alert("Please enter a nonempty username");
+        }
+        else {
+            socketio.emit("user_to_server", {user: username });
+
+        }
+        document.getElementById("username").value = "";
+      }
+      function createRoom(){
+         const newRoomName = document.getElementById("newRoomName").value;
+         
+         const password = document.getElementById("password").value;
+         if (newRoomName.length == 0) {
+            alert("Please enter a nonempty room name");
+        }
+        else {
+         
+            socketio.emit("new_room_info", {newRoomName: newRoomName, password: password});
+        }
+        
+      }
+      function joinRoom(){
+         const joinedRoomName = document.getElementById("joinedRoomName").value;
+         const password = document.getElementById("passwordRoom").value;
+         if (joinedRoomName.length == 0) {
+            alert("Please enter a nonempty room name");
+        }
+        else {
+            
+            socketio.emit("joined_room", {joined_room: joinedRoomName, password: password});
+        }
+      }
+      function kickUser(){
+         const userKicked = document.getElementById("userKicked").value;
+         if (userKicked.length == 0) {
+            alert("Please enter a nonempty username");
+        }
+        else{
+         //sending over the user who we want to kick and the current user who is doing the kicking
+         socketio.emit("kick_user", {userKicked: userKicked, roomKicked: currentRoom});
+        }
+      }
+      function banUser(){
+         const userBanned = document.getElementById("userBanned").value;
+         if (userBanned.length == 0) {
+            alert("Please enter a nonempty username");
+        }
+        else{
+         //sending over the user who we want to kick and the current user who is doing the kicking
+         socketio.emit("ban_user", {userBanned: userBanned});
+        }
+      }
+      function newMod(){
+         const newMod = document.getElementById("newMod").value;
+      if (newMod.length == 0) {
+            alert("Please enter a nonempty name");
+        }
+        else{
+         //sending over the user who we want to kick and the current user who is doing the kicking
+         socketio.emit("new_mod", {newMod: newMod});
+        }
+      }
+      function deleteRoom(){
+         const deletedRoom = document.getElementById("deletedRoom").value;
+         if (deletedRoom.length == 0) {
+            alert("Please enter a nonempty name");
+        }else{
+         //sending over our deleted room
+         socketio.emit("delete", {deletedRoom: deletedRoom});
+        }
+      }
+      </script>
+     </body>
+   </html>
